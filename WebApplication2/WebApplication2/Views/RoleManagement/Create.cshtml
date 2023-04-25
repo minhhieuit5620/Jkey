@@ -1,0 +1,94 @@
+﻿@model WebApplication2.Models.Role
+
+@{
+    ViewData["Title"] = "Role Information";
+}
+<div class="pagetitle">
+    <h1>Role Information</h1>
+</div><!-- End Page Title -->
+
+<section class="section">
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Role Information</h5>
+
+            <!-- Vertical Form -->
+            <form asp-action="Create" class="row g-3">
+                <div class="col-sm-5 col-xs-12">
+                    <label for="inputRoleName" class="form-label">Role Name</label>
+                    <input type="text" asp-for="RoleName" class="form-control" id="inputRoleName">
+                </div>
+                <div class="col-sm-5 col-xs-12">
+                    <label for="selectStatus" class="form-label">Status</label>
+                    <select class="form-select" asp-for="Active" id="selectStatus" required="">
+                        <option selected="true" value="Active">Active</option>
+                        <option value="InActive">Inactive</option>
+                    </select>
+                </div>
+                <div class="col-sm-12 col-xs-12">
+                    <label for="textareaRoleDes" class="form-label">Role Description</label>
+                    <div class="col-sm-10 col-xs-12 ">
+                        <textarea id="textareaRoleDes" asp-for="RoleDesciption" class="form-control" style="height: 100px"></textarea>
+                    </div>
+                </div>
+
+                <table class="table table-bordered ">
+                    <thead>
+                        <tr>
+                            <th scope="col">Feature</th>
+                            <th scope="col" class="text-center">All</th>
+                            <th scope="col" class="text-center">List</th>
+                            <th scope="col" class="text-center">View</th>
+                            <th scope="col" class="text-center">Add</th>
+                            <th scope="col" class="text-center">Edit</th>
+                            <th scope="col" class="text-center">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in ViewBag.PageList)
+                        {
+                            <tr>
+                                <input type="text" hidden value="@item.Name" name="Listname" id="name">
+
+                                <td>@item.Name</td>
+                                <td scope="col" class="text-center">
+                                    <input class="form-check-input" type="checkbox" value="All" name="ListPage" id="All">
+                                </td>
+                                <td scope="col" class="text-center">
+                                    <input class="form-check-input" type="checkbox" value="List" name="ListPage" id="List">
+                                </td>
+                                <td scope="col" class="text-center">
+                                    <input class="form-check-input" type="checkbox" value="Detail" name="ListPage" id="Detail">
+                                </td>
+                                <td scope="col" class="text-center">
+                                    <input class="form-check-input" type="checkbox" value="Create" name="ListPage" id="Create">
+                                </td>
+                                <td scope="col" class="text-center">
+                                    <input class="form-check-input" type="checkbox" value="Edit" name="ListPage" id="Edit">
+                                </td>
+                                <td scope="col" class="text-center">
+                                    <input class="form-check-input" type="checkbox" value="Delete" name="ListPage" id="Delete">
+                                </td>
+
+                                <td scope="col" class="text-center" hidden>
+                                    <input class="form-check-input" type="checkbox" hidden checked value="End" name="ListPage" id="Delete">
+                                </td>
+                              
+
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+                <div>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a href="/RoleManagement/Index" class="btn btn-secondary ">Back</a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+</section>

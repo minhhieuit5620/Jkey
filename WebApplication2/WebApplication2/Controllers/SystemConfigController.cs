@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebApplication2.Middleware;
 using WebApplication2.Models;
 using X.PagedList;
 
@@ -8,6 +9,7 @@ namespace WebApplication2.Controllers
     public class SystemConfigController : BaseController
     {
         // GET: SystemConfigController
+        [AuthenticationMiddleware(actionId: "List", pageId: "6")]
         [HttpGet]
         public ActionResult Index(
            [FromQuery] string? value ,// dữ liệu cần tìm kiếm        
@@ -23,7 +25,7 @@ namespace WebApplication2.Controllers
             return View(lst.ToPagedList(pageIndex, pageSize));
         }
 
-
+        [AuthenticationMiddleware(actionId: "Detail", pageId: "9")]
         // GET: SystemConfigController/Details/5
         public ActionResult Details(Guid id)
         {
@@ -42,6 +44,7 @@ namespace WebApplication2.Controllers
             }
         }
 
+        [AuthenticationMiddleware(actionId: "Create", pageId: "7")]
         // GET: SystemConfigController/Create
         public ActionResult Create()
         {
@@ -84,7 +87,7 @@ namespace WebApplication2.Controllers
                 return View();
             }
         }
-
+        [AuthenticationMiddleware(actionId: "Edit", pageId: "8")]
         // GET: SystemConfigController/Edit/5
         public ActionResult Edit(Guid id)
         {
@@ -147,6 +150,7 @@ namespace WebApplication2.Controllers
             }
         }
 
+        [AuthenticationMiddleware(actionId: "Delete", pageId: "10")]
         // GET: SystemConfigController/Delete/5
         public ActionResult Delete(Guid id)
         {

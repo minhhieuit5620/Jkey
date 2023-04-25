@@ -109,7 +109,9 @@ public partial class JkeyInternalContext : DbContext
         {
             entity.ToTable("Page");
 
-            entity.Property(e => e.Id).UseCollation("Vietnamese_CI_AS");
+            entity.Property(e => e.Id)
+                .HasMaxLength(250)
+                .UseCollation("Vietnamese_CI_AS");
             entity.Property(e => e.ActionId)
                 .HasMaxLength(50)
                 .HasColumnName("ActionID");
@@ -122,13 +124,16 @@ public partial class JkeyInternalContext : DbContext
 
         modelBuilder.Entity<PageRight>(entity =>
         {
-            entity.HasKey(e => e.PageId);
+            entity
+                .HasNoKey()
+                .ToTable("PageRight");
 
-            entity.ToTable("PageRight");
+            entity.Property(e => e.PageId).HasMaxLength(250);
 
-            entity.Property(e => e.PageId)
-                .HasMaxLength(50)
-                .HasColumnName("PageID");
+            entity.HasOne(d => d.Role).WithMany()
+                .HasForeignKey(d => d.RoleId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_PageRight_Roles");
         });
 
         modelBuilder.Entity<Role>(entity =>
@@ -209,6 +214,16 @@ public partial class JkeyInternalContext : DbContext
             entity
                 .HasNoKey()
                 .ToTable("UserRole");
+
+            entity.HasOne(d => d.Role).WithMany()
+                .HasForeignKey(d => d.RoleId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_UserRole_Roles");
+
+            entity.HasOne(d => d.User).WithMany()
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_UserRole_User");
         });
 
         modelBuilder.Entity<UserToken>(entity =>

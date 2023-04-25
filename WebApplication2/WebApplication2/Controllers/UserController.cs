@@ -65,7 +65,7 @@ namespace WebApplication2.Controllers
                         });
 
              
-               var pagePermisstion = checkPermission(user.Id);
+             //  var pagePermisstion = checkPermission(user.Id);
             }
             //var userid = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             //if (userid != null)
@@ -78,41 +78,41 @@ namespace WebApplication2.Controllers
             return Redirect("/HOMEINDEX/" + model.Username);
         }
 
-        public List<Page> checkPermission(Guid userId)
-        {
-            var roleUsers = db.UserRoles.Where(x => x.UserId == userId).ToList();
+        //public List<Page> checkPermission(Guid userId)
+        //{
+        //    var roleUsers = db.UserRoles.Where(x => x.UserId == userId).ToList();
 
-            IDictionary<Guid, List<PageRight>> pageRight = new Dictionary<Guid, List<PageRight>>();
+        //    IDictionary<Guid, List<PageRight>> pageRight = new Dictionary<Guid, List<PageRight>>();
 
-            for (int i = 0; i < roleUsers.Count; i++)
-            {
-                var pageId = db.PageRights.Where(x=>x.RoleId==roleUsers[i].RoleId).ToList();
-                if (pageId != null && pageId.Count>0)
-                {
-                    pageRight.Add(roleUsers[i].RoleId, pageId);
-                }
-            }
+        //    for (int i = 0; i < roleUsers.Count; i++)
+        //    {
+        //        var pageId = db.PageRights.Where(x=>x.RoleId==roleUsers[i].RoleId).ToList();
+        //        if (pageId != null && pageId.Count>0)
+        //        {
+        //            pageRight.Add(roleUsers[i].RoleId, pageId);
+        //        }
+        //    }
 
-            List<Page> page = new List<Page>();
-            foreach (var entry in pageRight)
+        //    List<Page> page = new List<Page>();
+        //    foreach (var entry in pageRight)
 
-            {
-                var check = "";
-                for (int i = 0; i < entry.Value.Count; i++)
-                {
-                    check = entry.Value[i].PageId.ToString();
-                    var valuePage = db.Pages.Where(x => x.Id == check).FirstOrDefault();
-                    if (!page.Contains(valuePage)) { 
-                        page.Add(valuePage); 
-                    }
-                    //page.Add(valuePage);
-                }
-            }
+        //    {
+        //        var check = "";
+        //        for (int i = 0; i < entry.Value.Count; i++)
+        //        {
+        //            check = entry.Value[i].PageId.ToString();
+        //            var valuePage = db.Pages.Where(x => x.Id == check).FirstOrDefault();
+        //            if (!page.Contains(valuePage)) { 
+        //                page.Add(valuePage); 
+        //            }
+        //            //page.Add(valuePage);
+        //        }
+        //    }
 
-            return page;
+        //    return page;
 
 
-        }
+        //}
 
         public async Task<IActionResult> Logout(string requestPath)
         {
