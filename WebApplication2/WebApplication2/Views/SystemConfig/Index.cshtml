@@ -1,0 +1,131 @@
+﻿@model IPagedList<WebApplication2.Models.SystemConfig>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Web.Common
+
+@{
+    ViewData["Title"] = "System Configuration";
+
+}
+
+<div class="pagetitle">
+    <h1>System Configuration</h1>
+</div>
+
+<section class="section">
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Search Configuration</h5>
+            <div class="row g-3">
+
+                <form action="/SystemConfig/Index" method="get">
+                    <div class="col-sm-5 col-xs-12">
+                        <label for="inputName" class="form-label">Config Name</label>
+                        <input type="text" name="name" class="form-control" id="inputName">
+                    </div>
+                    <div class="col-sm-5 col-xs-12">
+                        <label for="inputValue" class="form-label">Config Value</label>
+                        <input type="text" name="value" class="form-control" id="inputValue">
+                    </div>
+                    <div class="col-sm-5 col-xs-12">
+                        <label for="inputType" class="form-label">Config Type</label>
+                        <input type="text" name="type" class="form-control" id="inputType">
+                    </div>
+                    <div class="col-sm-8 col-xs-12" style="margin-top:30px">
+                        <button type="submit" class="btn btn-primary" id="Search">Search</button>
+                        <button type="reset" class="btn btn-secondary" id="Clear">Clear</button>
+                        <a class="btn btn-success " href="/SystemConfig/Create">Add</a>
+                    </div>
+                </form>
+
+
+
+                <div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="loading text-center">
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Configuration Table</h5>
+            <table class="table table-bordered ">
+                <thead>
+                    <tr>
+
+                        <th scope="col">Config Name</th>
+                        <th scope="col">Config Value</th>
+                        <th scope="col">Config Type</th>
+                        <th scope="col">Config Description</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Delete</th>
+                    </tr>
+                </thead>
+                <tbody class="tbody">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td><a  href="/SystemConfig/Details/@item.Id">@item.Name</a>  </td>
+                            <td>@item.Value</td>
+                            <td>@item.Type</td>
+                            <td>@item.Description</td>
+                            @if (item.Active == true)
+                            {
+                                <td> <div class="btn btn-sm btn-success ">Active</div></td>
+
+                            }
+                            else
+                            {
+                                <td> <div class="btn btn-sm btn-danger ">InActive</div></td>
+                            }
+                        
+                            <td>
+                              
+                                <a class="btn btn-secondary" href="/SystemConfig/Edit/@item.Id">Edit</a>
+                            </td>
+
+                            <td>
+                                <a class="btn btn-danger delete" href="@Url.Action("Delete",new { id = item.Id})" onclick="return confirm('Are you sure you want to delete this record?');">Delete</a>
+                                
+                            </td>
+
+                        </tr>
+                    }
+
+
+                </tbody>
+            </table>
+            <div class="row align-items-center">
+                <div class="col-sm-1 text-end ">
+                    <label>Page Size:</label>
+                </div>
+                <div class="col-sm-1">
+                    <select class="form-select" id="pageSize" required="">
+                        <option selected="true" value="15">15</option>
+                        <option value="30">30</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+                <div>
+                    @Html.PagedListPager(Model, page => Url.Action("Index", new { pageIndex=page }), new PagedListRenderOptions()
+                    {
+                    ActiveLiElementClass = "active",
+                    PageClasses = new[]{ "page-link"},
+                    LiElementClasses=new[] { "page-item" },
+                    UlElementClasses = new[] { "pagination","justify-content-center", "mt-3" },
+                    LinkToNextPageFormat = "Next",
+                    LinkToPreviousPageFormat = "Previous",
+                    MaximumPageNumbersToDisplay = 5
+
+                    })
+
+                </div>
+            </div>
+        </div>
+</section>
